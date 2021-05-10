@@ -1,5 +1,5 @@
 version: '3.9'
-services: 
+services:
   frontend:
     build:
       context: ./frontend
@@ -13,7 +13,7 @@ services:
     # This depends on backend because Nginx will stop if
     # it can't find the DNS entry named "backend" when
     # it starts
-    depends_on: 
+    depends_on:
       - accounts
     ports:
       - "3000:80"
@@ -21,7 +21,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    depends_on: 
+    depends_on:
       - postgres
     ports:
       - "8080:80"
@@ -37,14 +37,14 @@ services:
       WAIT_HOSTS: postgres:5432
 
       # Thes values are the same as below
-      PGDATABASE: conference_app 
+      PGDATABASE: conference_app
       PGUSER: conference_app_user
       PGPASSWORD: 5UvUwY3xRH86xXhx
   accounts:
     build:
       context: ./accounts
       dockerfile: Dockerfile
-    depends_on: 
+    depends_on:
       - backend
     ports:
       - "8081:80"
@@ -60,9 +60,32 @@ services:
       WAIT_HOSTS: postgres:5432
 
       # Thes values are the same as below
-      PGDATABASE: conference_app 
+      PGDATABASE: conference_app
       PGUSER: conference_app_user
-      PGPASSWORD: 5UvUwY3xRH86xXhx  
+      PGPASSWORD: 5UvUwY3xRH86xXhx
+  locations:
+    build:
+      context: ./locations
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "8082:80"
+    environment:
+      PORT: 80
+      JWT_SECRET: secret
+      PGHOST: postgres
+      PGPORT: 5432
+      PGAPPNAME: Conference GO!
+
+      # See the Dockerfile for the locations to understand
+      # how the WAIT_HOSTS values are used
+      WAIT_HOSTS: postgres:5432
+
+      # Thes values are the same as below
+      PGDATABASE: conference_app
+      PGUSER: conference_app_user
+      PGPASSWORD: 5UvUwY3xRH86xXhx
   postgres:
     image: postgres:13
     environment:
