@@ -109,6 +109,29 @@ services:
       PGDATABASE: conference_app 
       PGUSER: conference_app_user
       PGPASSWORD: 5UvUwY3xRH86xXhx   
+  presentations:
+    build:
+      context: ./presentations
+      dockerfile: Dockerfile
+    depends_on: 
+      - backend
+    ports:
+      - "8084:80"
+    environment:
+      PORT: 80
+      JWT_SECRET: secret
+      PGHOST: postgres
+      PGPORT: 5432
+      PGAPPNAME: Conference GO!
+
+      # See the Dockerfile for the presentations to understand
+      # how the WAIT_HOSTS values are used
+      WAIT_HOSTS: postgres:5432
+
+      # Thes values are the same as below
+      PGDATABASE: conference_app 
+      PGUSER: conference_app_user
+      PGPASSWORD: 5UvUwY3xRH86xXhx  
   postgres:
     image: postgres:13
     environment:
