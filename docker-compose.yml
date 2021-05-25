@@ -10,16 +10,16 @@ services:
         # on the local computer to 80 in the running
         # container.
         # REACT_APP_API_URL: http://localhost:8080/api
-    # This depends on backend because Nginx will stop if
-    # it can't find the DNS entry named "backend" when
+    # This depends on events because Nginx will stop if
+    # it can't find the DNS entry named "events" when
     # it starts
     depends_on:
       - accounts
     ports:
       - "3000:80"
-  backend:
+  events:
     build:
-      context: ./backend
+      context: ./events
       dockerfile: Dockerfile
     depends_on:
       - postgres
@@ -32,7 +32,7 @@ services:
       PGPORT: 5432
       PGAPPNAME: Conference GO!
 
-      # See the Dockerfile for the backend to understand
+      # See the Dockerfile for the events to understand
       # how the WAIT_HOSTS values are used
       WAIT_HOSTS: postgres:5432
 
@@ -45,7 +45,7 @@ services:
       context: ./accounts
       dockerfile: Dockerfile
     depends_on:
-      - backend
+      - events
     ports:
       - "8081:80"
     environment:
@@ -68,7 +68,7 @@ services:
       context: ./locations
       dockerfile: Dockerfile
     depends_on:
-      - backend
+      - events
     ports:
       - "8082:80"
     environment:
