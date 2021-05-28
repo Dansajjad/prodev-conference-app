@@ -15,12 +15,14 @@ import Accounts from "./components/accounts";
 import PresentationList from "./components/presentations/presentationList";
 import BadgesList from './components/badges/badgesList';
 import AttendeeList from './components/attendees/attendeesList';
+import FlakyService from "./components/flakyService";
 
 import auth, { AuthorizationContextProvider } from "./services/authService";
 
 import 'font-awesome/css/font-awesome.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import "./App.css";
+
 
 TimeAgo.addLocale(en);
 
@@ -49,6 +51,7 @@ class App extends Component {
               <Route path="/accounts" component={Accounts} />
               <Route path="/login" component={Login} />
               <Route path="/logout" component={Logout} />
+              <Route path="/flakyService" component={FlakyService} />
               <Route render={() => <Redirect to="/login" />} />
             </Switch>
             <ToastContainer />
